@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Recipes | Project Name</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css"> 
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="#">Project Name</a> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="pages/pantry.html">The Pantry</a></li>
+                <li><a href="index.html" class="active">Search Recipes</a></li>
+                <li><a href="pages/tracking.html">Meal Tracking</a></li>
+                <li><a href="pages/planning.html">Meal Planning</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="login.html" class="btn-login">Log In</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="recipe-search" class="container">
+            <h2>Find Your Next Meal</h2>
+            <form class="search-form">
+                <input type="text" placeholder="Search by recipe name...">
+                <button type="submit">Search</button>
+
+                <div class="filters">
+                    <h3>Filter Options</h3>
+                    <label>
+                        <input type="checkbox" id="pantry-filter">
+                        Use only **The Pantry** ingredients
+                    </label>
+                    
+                    <div class="nutritional-goals">
+                        <label for="max-cals">Max Calories:</label>
+                        <input type="number" id="max-cals" min="100">
+                    </div>
+                </div>
+            </form>
+        </section>
+        
+        <section id="recipe-results" class="container">
+            <h2>Matching Recipes</h2>
+            
+            <article class="recipe-card">
+                <img src="img/example-dish.jpg" alt="Recipe Name">
+                <div class="card-content">
+                    <h3>Spicy Chicken Stir-fry</h3>
+                    <p>Ready in 30 min | 450 kcal</p>
+                    <p class="match-status">**Pantry Match: 8/10 Ingredients**</p>
+                    <a href="recipe-detail.html?id=123" class="btn-primary">View Recipe</a>
+                </div>
+            </article>
+            
+        </section>
+    </main>
+    </section>
+    </main>
+
+    <footer>
+        <p>&copy; CSE 398 Final Project | Alisha Hassan, Matthew Kovalcik, Naomi Yokoo, Noah Cirks, Vivien Latt</p>
+    </footer>
+    </body>
+</html>
