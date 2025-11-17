@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Project Name</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="index.html">Project Name</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="pages/pantry.html">The Pantry</a></li>
+            <li><a href="index.html">Search Recipes</a></li>
+            <li><a href="pages/tracking.html">Meal Tracking</a></li>
+            <li><a href="pages/planning.html">Meal Planning</a></li>
+        </ul>
+        <div class="auth-links">
+            <a href="login.html" class="btn-login">Log In</a>
+        </div>
+    </nav>
+</header>
+
+<div id="auth-wrapper">
+    <div class="auth-container">
+        <h2>Create Account</h2>
+        <input type="email" placeholder="Email" id="signupEmail" required>
+        <input type="password" placeholder="Password" id="signupPassword" required>
+        <button class="btn-auth" onclick="signup()">Sign Up</button>
+        <p class="auth-switch">
+            Already have an account? <a href="login.html">Log In</a>
+        </p>
+    </div>
+</div>
+
+<script>
+function signup() {
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    if(email && password){
+        localStorage.setItem("authToken", "true");
+        localStorage.setItem("userEmail", email);
+        window.location.href = "login.html";
+    } else {
+        alert("Please enter email and password");
+    }
+}
+</script>
+
+</body>
+</html>
 
