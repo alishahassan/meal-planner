@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pantry | Project Name</title>
+    <link rel="stylesheet" href="../css/style.css"> 
+    <link rel="stylesheet" href="../css/components.css"> 
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="../index.html">Project Name</a> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="pantry.html" class="active">The Pantry</a></li> 
+                <li><a href="../index.html">Search Recipes</a></li>
+                <li><a href="tracking.html">Meal Tracking</a></li>
+                <li><a href="planning.html">Meal Planning</a></li>
+                </ul>
+                <div class="auth-links">
+                    <a href="../login.html" class="btn-login">Log In</a> 
+                    </div>
+            </nav>
+    </header>
 
+    <main>
+        <section id="pantry-management" class="container">
+            <h1>Your Current Pantry Stock</h1>
+            
+            <div class="add-ingredient-form">
+                <h2>Add an Ingredient</h2>
+                <form id="add-item-form">
+                    <input type="text" id="ingredient-name" placeholder="Ingredient">
+                    <button type="submit" class="btn-primary">Add Item</button>
+                </form>
+            </div>
+            
+            <div class="pantry-list-area">
+                <h2>In Stock</h2>
+                <ul id="ingredient-list">
+                    <li class="pantry-item">
+                        <span>Chicken Breast</span>
+                        <button class="btn-small delete-item">🗑️</button>
+                    </li>
+                    <li class="pantry-item">
+                        <span>Pasta</span>
+                        <button class="btn-small delete-item">🗑️</button>
+                    </li>
+                    </ul>
+            </div>
+            
+        </section>
+    </main>
+    
+    <script src="../js/pantry.js"></script>
+    
+    </body>
+</html>
