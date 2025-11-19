@@ -38,20 +38,39 @@
     </div>
 </div>
 
+<!-- SUPABASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-function login() {
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-    if(email && password){
-        localStorage.setItem("authToken", "true");
-        localStorage.setItem("userEmail", email);
-        window.location.href = "index.html";
-    } else {
-        alert("Please enter email and password");
+    const supabaseUrl = "https://uewubyuguyljkwlwwaqf.supabase.co";
+    const supabaseKey = "sb_publishable_zkM7vzXzd3mR0RmeQ9IvCQ_bMfgBikf";
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function login() {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        if (!email || !password) {
+            alert("Please enter email and password");
+            return;
+        }
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            alert(error.message);
+        } else {
+            // Save session
+            localStorage.setItem("authToken", data.session.access_token);
+            localStorage.setItem("userEmail", email);
+
+            window.location.href = "index.html";
+        }
     }
-}
 </script>
 
 </body>
 </html>
-
