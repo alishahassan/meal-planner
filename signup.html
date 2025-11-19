@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta-name viewport="width=device-width, initial-scale=1.0">
     <title>Sign Up | Project Name</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
@@ -29,8 +29,8 @@
 <div id="auth-wrapper">
     <div class="auth-container">
         <h2>Create Account</h2>
-        <input type="email" placeholder="Email" id="signupEmail" required>
-        <input type="password" placeholder="Password" id="signupPassword" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
         <button class="btn-auth" onclick="signup()">Sign Up</button>
         <p class="auth-switch">
             Already have an account? <a href="login.html">Log In</a>
@@ -38,26 +38,21 @@
     </div>
 </div>
 
-<!-- SUPABASE SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
     const supabaseUrl = "https://uewubyuguyljkwlwwaqf.supabase.co";
     const supabaseKey = "sb_publishable_zkM7vzXzd3mR0RmeQ9IvCQ_bMfgBikf";
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    const { createClient } = supabase;
+    const client = createClient(supabaseUrl, supabaseKey);
 
     async function signup() {
         const email = document.getElementById("signupEmail").value;
         const password = document.getElementById("signupPassword").value;
 
-        if (!email || !password) {
-            alert("Please enter email and password");
-            return;
-        }
-
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password
+        const { data, error } = await client.auth.signUp({
+            email,
+            password
         });
 
         if (error) {
