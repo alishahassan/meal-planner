@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta-name viewport="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Project Name</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
-
 <header>
     <nav class="navbar">
         <div class="navbar-brand">
@@ -20,7 +19,7 @@
             <li><a href="pages/tracking.html">Meal Tracking</a></li>
             <li><a href="pages/planning.html">Meal Planning</a></li>
         </ul>
-        <div class="auth-links">
+        <div class="auth-links" id="auth-links">
             <a href="login.html" class="btn-login">Log In</a>
         </div>
     </nav>
@@ -39,7 +38,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
     const supabaseUrl = "https://uewubyuguyljkwlwwaqf.supabase.co";
     const supabaseKey = "sb_publishable_zkM7vzXzd3mR0RmeQ9IvCQ_bMfgBikf";
@@ -49,12 +47,7 @@
     async function login() {
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
-
-        const { data, error } = await client.auth.signInWithPassword({
-            email,
-            password
-        });
-
+        const { data, error } = await client.auth.signInWithPassword({ email, password });
         if (error) {
             alert(error.message);
         } else {
@@ -63,7 +56,13 @@
             window.location.href = "index.html";
         }
     }
-</script>
 
+    async function checkRedirect() {
+        const { data } = await client.auth.getSession();
+        if (data.session) window.location.href = "index.html";
+    }
+
+    checkRedirect();
+</script>
 </body>
 </html>
