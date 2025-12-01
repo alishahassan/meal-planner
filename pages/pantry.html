@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Pantry | Project Name</title>
-    <link rel="stylesheet" href="../css/style.css"> 
-    <link rel="stylesheet" href="../css/components.css"> 
+    <link rel="stylesheet" href="/css/style.css"> 
+    <link rel="stylesheet" href="/css/components.css"> 
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="navbar-brand">
-                <a href="../index.html">Project Name</a> 
+                <a href="/index.html">Project Name</a> 
             </div>
             <ul class="nav-links">
-                <li><a href="pantry.html" class="active">The Pantry</a></li> 
-                <li><a href="../index.html">Search Recipes</a></li>
-                <li><a href="tracking.html">Meal Tracking</a></li>
-                <li><a href="planning.html">Meal Planning</a></li>
+                <li><a href="/pages/pantry.html" class="active">The Pantry</a></li> 
+                <li><a href="/index.html">Search Recipes</a></li>
+                <li><a href="/pages/tracking.html">Meal Tracking</a></li>
+                <li><a href="/pages/planning.html">Meal Planning</a></li>
                 </ul>
                 <div class="auth-links">
-                    <a href="../login.html" class="btn-login">Log In</a> 
+                    <a href="/login.html" class="btn-login">Log In</a> 
                     </div>
             </nav>
     </header>
@@ -41,20 +41,33 @@
                 <h2>In Stock</h2>
                 <ul id="ingredient-list">
                     <li class="pantry-item">
-                        <span>Chicken Breast</span>
+                        <label>
+                            <input type="checkbox" data-ingredient="Chicken Breast">
+                            <span>Chicken Breast</span>
+                        </label>
                         <button class="btn-small delete-item">🗑️</button>
                     </li>
                     <li class="pantry-item">
-                        <span>Pasta</span>
+                        <label>
+                            <input type="checkbox" data-ingredient="Pasta">
+                            <span>Pasta</span>
+                        </label>
                         <button class="btn-small delete-item">🗑️</button>
                     </li>
-                    </ul>
+                </ul>
+            </div>
+
+            <div class="pantry-search-container">
+                <button id="search-by-pantry-btn" class="btn-primary">
+                    Search Recipes with Selected Items
+                </button>
+                <p id="search-message" style="display: none; color: red; "></p>
             </div>
             
         </section>
     </main>
     
-    <script src="../js/pantry.js"></script>
+    <script type="module" src="/js/pantry.js"></script>
     
     </body>
 </html>
