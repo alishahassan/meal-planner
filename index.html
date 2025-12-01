@@ -8,82 +8,95 @@
     <link rel="stylesheet" href="css/components.css"> 
 </head>
 <body>
-<header>
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <a href="#">Project Name</a> 
-        </div>
-        <ul class="nav-links">
-            <li><a href="pages/pantry.html">The Pantry</a></li>
-            <li><a href="index.html" class="active">Search Recipes</a></li>
-            <li><a href="pages/tracking.html">Meal Tracking</a></li>
-            <li><a href="pages/planning.html">Meal Planning</a></li>
-        </ul>
-        <div class="auth-links" id="auth-links">
-            <a href="login.html" class="btn-login">Log In</a>
-        </div>
-    </nav>
-</header>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="#">Project Name</a> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="pages/pantry.html">The Pantry</a></li>
+                <li><a href="index.html" class="active">Search Recipes</a></li>
+                <li><a href="pages/tracking.html">Meal Tracking</a></li>
+                <li><a href="pages/planning.html">Meal Planning</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="login.html" class="btn-login">Log In</a>
+            </div>
+        </nav>
+    </header>
 
-<main>
-    <section id="recipe-search" class="container">
-        <h2>Find Your Next Meal</h2>
-        <form class="search-form">
-            <input type="text" placeholder="Search by recipe name...">
-            <button type="submit">Search</button>
-            <div class="filters">
-                <h3>Filter</h3>
-                <div class="nutritional-goals">
-                    <label for="max-cals">Max Calories:</label>
-                    <input type="number" id="max-cals" min="100">
+    <main>
+        <section id="recipe-search-form" class="container">
+            <h2>Find Your Next Meal</h2>
+            <form class="search-form" id="name-search-form">
+                <input type="text" placeholder="Search by recipe name..." id="recipe-search-input">
+                <button type="submit" id="search-button">Search</button>
+
+                <div class="filters">
+                    <h3>Filter</h3>
+                    <div class="nutritional-goals">
+                        <label for="max-cals">Max Calories:</label>
+                        <input type="number" id="max-cals" min="100">
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </section>
+        
+        <section id="recipe-results" class="container">
+            <h2>Matching Meals</h2>
+            
+            <article class="recipe-card">
+                <img src="img/spicy_chicken_stir_fry.jpg" alt="Recipe Name">
+                <div class="card-content">
+                    <h3>Spicy Chicken Stir-fry</h3>
+                    <p>Calories: 450 kcal</p>
+                    <a href="recipe-detail.html?id=123" class="btn-primary">View Meal</a>
+                </div>
+            </article>
+            
+        </section>
+    </main>
     </section>
+    </main>
+
+    <footer>
+        <p>&copy; CSE 398 Final Project | Alisha Hassan, Matthew Kovalcik, Naomi Yokoo, Noah Cirks, Vivien Latt</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchButton = document.getElementById('search-button');
+            
+            if (searchButton) {
+                searchButton.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    
+                    const input = document.getElementById('recipe-search-input');
+                    const calInput = document.getElementById('max-cals');
+                    const query = input.value.trim();
+                    const maxCals = calInput.value.trim();
+
+                    if (query || maxCals) {
+                        let url = `index.html?`;
+
+                        if (query) {
+                            url += `q=${encodeURIComponent(query)}`;
+                        }
+
+                        if (maxCals) {
+                            url += `${query ? '&' : ''}max_cals=${encodeURIComponent(maxCals)}`; 
+                        }
+                        
+                        window.location.href = url;
+                    }
+                });
+            } else {
+                 console.error("CRITICAL ERROR: Search button not found.");
+            }
+        });
+    </script>
     
-    <section id="recipe-results" class="container">
-        <h2>Matching Meals</h2>
-        <article class="recipe-card">
-            <img src="img/spicy_chicken_stir_fry.jpg" alt="Recipe Name">
-            <div class="card-content">
-                <h3>Spicy Chicken Stir-fry</h3>
-                <p>Calories: 450 kcal</p>
-                <p class="match-status">**Pantry Match: 8/10 Ingredients**</p>
-                <a href="recipe-detail.html?id=123" class="btn-primary">View Meal</a>
-            </div>
-        </article>
-    </section>
-</main>
+    <script src="js/index.js" type="module"></script>
 
-<footer>
-    <p>&copy; CSE 398 Final Project | Alisha Hassan, Matthew Kovalcik, Naomi Yokoo, Noah Cirks, Vivien Latt</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const supabaseUrl = "https://uewubyuguyljkwlwwaqf.supabase.co";
-    const supabaseKey = "sb_publishable_zkM7vzXzd3mR0RmeQ9IvCQ_bMfgBikf";
-    const { createClient } = supabase;
-    const client = createClient(supabaseUrl, supabaseKey);
-
-    const authLinks = document.getElementById("auth-links");
-
-    async function checkAuth() {
-        const { data } = await client.auth.getSession();
-        if (data.session) {
-            authLinks.innerHTML = `
-                <span style="margin-right:10px;">${data.session.user.email}</span>
-                <button class="btn-login" onclick="logout()">Log Out</button>
-            `;
-        }
-    }
-
-    async function logout() {
-        await client.auth.signOut();
-        window.location.href = "login.html";
-    }
-
-    checkAuth();
-</script>
-</body>
+    </body>
 </html>
