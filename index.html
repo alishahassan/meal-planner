@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar">
             <div class="navbar-brand">
-                <a href="#">Project Name</a> 
+                <a href="#">Meal Finder</a> 
             </div>
             <ul class="nav-links">
                 <li><a href="pages/pantry.html">The Pantry</a></li>
@@ -43,17 +43,7 @@
         </section>
         
         <section id="recipe-results" class="container">
-            <h2>Matching Meals</h2>
-            
-            <article class="recipe-card">
-                <img src="img/spicy_chicken_stir_fry.jpg" alt="Recipe Name">
-                <div class="card-content">
-                    <h3>Spicy Chicken Stir-fry</h3>
-                    <p>Calories: 450 kcal</p>
-                    <a href="recipe-detail.html?id=123" class="btn-primary">View Meal</a>
-                </div>
-            </article>
-            
+            <h2>Search a meal to get started!</h2>
         </section>
     </main>
     </section>
@@ -66,35 +56,40 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchButton = document.getElementById('search-button');
-            
+            const input = document.getElementById('recipe-search-input');
+            const calInput = document.getElementById('max-cals');
+        
+            // 1️⃣ Populate inputs from URL params if present
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get("q");
+            const maxCals = params.get("max_cals");
+        
+            if (query) input.value = query;
+            if (maxCals) calInput.value = maxCals;
+        
+            // 2️⃣ Handle search button click
             if (searchButton) {
                 searchButton.addEventListener('click', function(e) {
                     e.preventDefault(); 
                     
-                    const input = document.getElementById('recipe-search-input');
-                    const calInput = document.getElementById('max-cals');
-                    const query = input.value.trim();
-                    const maxCals = calInput.value.trim();
-
-                    if (query || maxCals) {
+                    const queryVal = input.value.trim();
+                    const maxCalsVal = calInput.value.trim();
+        
+                    if (queryVal || maxCalsVal) {
                         let url = `index.html?`;
-
-                        if (query) {
-                            url += `q=${encodeURIComponent(query)}`;
-                        }
-
-                        if (maxCals) {
-                            url += `${query ? '&' : ''}max_cals=${encodeURIComponent(maxCals)}`; 
-                        }
-                        
+        
+                        if (queryVal) url += `q=${encodeURIComponent(queryVal)}`;
+                        if (maxCalsVal) url += `${queryVal ? '&' : ''}max_cals=${encodeURIComponent(maxCalsVal)}`;
+        
                         window.location.href = url;
                     }
                 });
             } else {
-                 console.error("CRITICAL ERROR: Search button not found.");
+                console.error("CRITICAL ERROR: Search button not found.");
             }
         });
-    </script>
+        </script>
+        
     
     <script src="js/index.js" type="module"></script>
 
