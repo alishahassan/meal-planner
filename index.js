@@ -27,7 +27,13 @@ function renderSearchResults(recipes) {
         const card = document.createElement("article");
         card.className = "recipe-card";
 
-        const imgSrc = recipe.photo_url || "img/default.jpg";
+        let fileName = recipe.Recipe
+            .toLowerCase()
+            .replace(/\s+/g, '_')
+            .replace(/[^\w_-]/g, '');
+        fileName += ".jpg";
+
+        const imgSrc = `/img/${fileName}`;
         const name = recipe.Recipe;
         const calories = recipe.Calories || "N/A";
         const id = recipe.RecepieID;
