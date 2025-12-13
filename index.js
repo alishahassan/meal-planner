@@ -46,6 +46,12 @@ function renderSearchResults(recipes) {
 
 // Main Page Logic
 document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const searchQuery = params.get("q");
+    const ingredientList = params.get("ingredients");
+    const maxCalories = params.get("max_cals");
+    const maxCalsValue = maxCalories && !isNaN(parseInt(maxCalories)) ? parseInt(maxCalories) : null;
+
     const searchForm = document.getElementById('search-form');
     if (searchForm) {
         searchForm.addEventListener('submit', function(e) {
@@ -59,12 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const searchQuery = params.get("q");
-    const ingredientList = params.get("ingredients");
-    const maxCalories = params.get("max_cals");
-
-    console.log("🔍 URL ingredient list =", ingredientList);
+    console.log("URL ingredient list =", ingredientList);
 
     // Results from pantry.html via localStorage
     const rawResults = localStorage.getItem("recipeResults");
@@ -87,47 +88,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     let recipes = [];
 
     // Case A: search by recipe name
-    if (searchQuery) {
-        console.log("Searching by name:", searchQuery);
-    
-        // Initialize the query chain
-        let queryBuilder = supabase
-            .from("Recepies")
-            .select("*")
-            .ilike("Recipe", `%${searchQuery}%`);
-    
-        // Apply filter maxCalories parameter is present
-        if (maxCalories && !isNaN(parseInt(maxCalories))) {
-            const calValue = parseInt(maxCalories);
-            console.log(`Applying Max Calories filter: ${calValue}`);
-            
-            // Chain the filter
-            queryBuilder = queryBuilder.lte("Calories", parseInt(maxCalories));
-        }
-    
-        // Await final result after all filtering is complete
-        const { data, error } = await queryBuilder;
-    
-        if (error) {
-            console.error("Supabase name search error:", error);
-            console.error("Supabase error details:", error.message);
-            return;
-        }
-        
-        recipes = data || [];
-        console.log(`Found ${recipes.length} recipes by name.`);
+if (searchQuery) {
+    console.log("Searching by name:", searchQuery);
+
+    // Fetch recipes by name
+    const { data, error } = await supabase
+        .from("Recepies")
+        .select("*")
+        .ilike("Recipe", `%${searchQuery}%`);
+
+    if (error) {
+        console.error("Supabase name search error:", error);
+        return;
     }
+
+    // Filter results numerically
+    recipes = (data || []).filter(r => {
+        if (!r.Calories) return false;
+        const calNum = parseInt(r.Calories, 10);
+        return !isNaN(calNum) && (maxCalsValue != null ? calNum <= maxCalsValue : true);
+    });
+
+    console.log(`Found ${recipes.length} recipes by name after applying max calories filter.`);
+}
 
     // Case B: search by selected pantry ingredients
     if (ingredientList) {
-        // Prepare search string: "chicken | pasta | bread"
+        // Prepare search string
         const selected = ingredientList.split(",").map(s => s.trim());    
         const searchString = selected.join(' | '); 
         
         console.log("Searching by ingredients OR:", searchString);
     
-        // Use RPC OR direct query to find matching Recipe IDs
-        // Standard query that finds all ingredient rows containing the search term
+        // Query that finds all ingredient rows containing the search term
         const { data: ingredientRows, error: ingError } = await supabase
             .from("Ingridients")
             .select("RecepieID")
@@ -167,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
     
-    // Final Render for Case A and Case B
+    // Final Render
     if (recipes.length > 0) {
         renderSearchResults(recipes);
     } else {
