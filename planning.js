@@ -50,7 +50,7 @@ if (weekElement) {
 }
 
 
-
+const recipesPerDay = 3;
 const weeklyGrid = document.getElementById("weekly-meals-grid");
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; 
 
@@ -70,9 +70,12 @@ for (let i = 0; i < weekdays.length; i++) {
 
     const scrollBox = dayCard.querySelector(".scroll-box");
 
-    for (let j = 0; j < pastRecipes.length; j++) {
-        const recipe = pastRecipes[j];
 
+    const start = i * recipesPerDay;
+    const end = start + recipesPerDay;
+    const recipesForDay = pastRecipes.slice(start, end);
+
+    recipesForDay.forEach(recipe => {
         const recipeCard = document.createElement("div");
         recipeCard.classList.add("recipe-card");
 
@@ -81,11 +84,10 @@ for (let i = 0; i < weekdays.length; i++) {
             <div class="card-content">
                 <h3>${recipe.name}</h3>
                 <a href="#" class="btn-primary">View Meal</a>
-            </div>
-        `;
-
+            </div>`;
         scrollBox.appendChild(recipeCard);
-    }
+        
+    });
 }
 
 
