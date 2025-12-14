@@ -48,31 +48,31 @@ class Recipe {
 const chicken = new Recipe ({
     name: "Chicken Stir Fry",
     ingredients: ["chicken", "sauce", "egg"],
-    image: "../img/chicken2.jpg"
+    image: "../images/chicken2.jpg"
 })
 
 const toast = new Recipe ({
     name: "Toast",
     ingredients: ["bread", "butter"],
-    image: "../img/toast.jpg"
+    image: "../images/toast.jpg"
 })
 
 const hotdog = new Recipe ({
     name: "Hot Dog",
     ingredients: ["hotdog", "bun"],
-    image: "../img/hotdog.webp"
+    image: "../images/hotdog.webp"
 })
 
 const hotdog2 = new Recipe ({
     name: "Hot Dog",
     ingredients: ["hotdog", "bun"],
-    image: "../img/hotdog.webp"
+    image: "../images/hotdog.webp"
 })
 
 const hotdog3 = new Recipe ({
     name: "Hot Dog",
     ingredients: ["hotdog", "bun"],
-    image: "../img/hotdog.webp"
+    image: "../images/hotdog.webp"
 })
 
 let pastRecipes = [chicken, toast, hotdog];
