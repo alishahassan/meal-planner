@@ -1,1 +1,110 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>Meal Tracker</title>
+        <link rel ="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/components.css"> 
+        <link rel="stylesheet" href="../css/trackerstyle.css"> 
+    </head>
 
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="#">Project Name</a> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="../pages/pantry.html">The Pantry</a></li>
+                <li><a href="../index.html">Search Recipes</a></li>
+                <li><a href="../pages/tracking.html" class="active">Meal Tracking</a></li>
+                <li><a href="../pages/planning.html">Meal Planning</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="login.html" class="btn-login">Log In</a>
+            </div>
+        </nav>
+    </header>
+
+    <body>
+
+
+
+        <div class="container-test">
+            <div id="stats-header" class="grid">
+                <h2>Daily stats</h2>
+                <div id="stats-wrapper">
+
+
+                </div>
+            </div>
+
+            <div id="meals-made" class="grid">
+                <h2>Today's meals:</h2>
+                <div id="saved-meals" class="container"></div>
+            </div>
+            <div id="todays-stats" class="grid">
+                <h2>Today's stats</h2>
+                    <div id="caloriesleft-container">
+                        <img src="../img/caloriesleft.svg" alt="calories left">
+                        <div id="calorie-count"></div>
+                    </div>
+                    
+                    <div class="stats-text-icon">
+                        <img src="../img/dailyprotein.svg" alt="daily protein">
+                        <div class="stats-text-icon-text">
+                            <h3>15g</h3>
+                            <p>protein</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-text-icon">
+                        <img src="../img/dailycarbs.svg" alt="daily protein">
+                        <div class="stats-text-icon-text">
+                            <h3>175g</h3>
+                            <p>carbs</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-text-icon">
+                        <img src="../img/dailyfats.svg" alt="daily protein">
+                        <div class="stats-text-icon-text">
+                            <h3>10g</h3>
+                            <p>fats</p>
+                        </div>
+                    </div>
+
+                    <h3>Almost towards your goal!</h3>
+                    
+                </div>
+                
+            </div>
+            <!-- <div id="health-rating" class="grid">
+                <h2>Overall HEI</h2>
+                <img src="../img/healthscore.svg" alt="health score">
+                <p>more text</p>
+               
+
+            </div> -->
+                
+                <!-- <h2>Overall HEI Rating:</h2> -->
+                <!-- <div class="circle">67</div> -->
+            <div id="weekly-stats" class="grid">
+                <h2>This Week's Calorie Intake</h2>
+                <div id="barchart"></div>
+            </div>
+
+
+        </div>
+
+        
+        <div class="main-page">
+            <div class="recipe-list"></div>
+            
+
+        </div>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="../tracking.js"></script>
+
+        <!-- <script src="../parse.js"></script> -->
+    </body>
+</html>

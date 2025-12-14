@@ -1,1 +1,65 @@
 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Meal Tracker</title>
+        <link rel ="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/components.css"> 
+        <link rel="stylesheet" href="../css/planning.css"> 
+    </head>
+
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="#">Project Name</a> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="../pages/pantry.html">The Pantry</a></li>
+                <li><a href="../index.html">Search Recipes</a></li>
+                <li><a href="../pages/tracking.html">Meal Tracking</a></li>
+                <li><a href="../pages/planning.html" class="active">Meal Planning</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="login.html" class="btn-login">Log In</a>
+            </div>
+        </nav>
+    </header>
+
+
+    <body>
+        <div class="planner-container">
+            <div id="header-grid" class="planner-items">
+                <h1>Plan your next meal</h1>
+            </div>
+            <div id="weekly-meals" class="planner-items">
+                <div class="date-wrapper">
+                    <div id="current-date"></div>
+                    <div id="current-week"></div>
+                </div>
+                <div id="weekly-meals-grid">
+                    <!-- <div class="day-card">
+                        <div class="card-header">
+                            <h1>date</h1>
+                        </div>
+                        <div class="scroll-box"></div>
+                    </div> -->
+
+                </div>
+            </div>
+            <div id="popular-meals" class="planner-items">
+                <h1>You should try this!</h1>
+                <div class="recipe-card">
+                    <img src="../foodImages/chicken_parmesean.jpg" alt="Chicken Parmesean">
+                    <div class="card-content">
+                        <h3>Chicken Parmesean</h3>
+                        <a href="#" class="btn-primary">View Meal</a>
+                        <a href="#" class="add-button">Add</a>
+                        
+                    </div>
+                </div>
+                <p>based on what you enjoy</p>
+            </div>
+        </div>
+        <script src="../planning.js"></script>
+    </body>
+</html>

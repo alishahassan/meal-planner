@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details | Project Name</title>
+    <link rel="stylesheet" href="/css/style.css"> 
+    <link rel="stylesheet" href="/css/components.css"> 
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="/index.html">Home</a> 
+            </div>
+            <ul class="nav-links">
+                <li><a href="/pages/pantry.html">The Pantry</a></li> 
+                <li><a href="/index.html">Search Recipes</a></li>
+                <li><a href="/pages/tracking.html">Meal Tracking</a></li>
+                <li><a href="/pages/planning.html">Meal Planning</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="/login.html" class="btn-login">Log In</a> 
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="recipe-detail" class="container">
+            <h1>Recipe Details</h1>
+            <div id="recipe-content">
+                <p>Loading recipe...</p>
+            </div>
+
+            <h2>Macros</h2>
+            <div id="macros-content">
+                <p>Loading macros...</p>
+            </div>
+
+            <h2>Allergens</h2>
+            <div id="allergens-content">
+                <p>Loading allergens...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; CSE 398 Final Project | Alisha Hassan, Matthew Kovalcik, Naomi Yokoo, Noah Cirks, Vivien Latt</p>
+    </footer>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.0/+esm';
+
+        const supabaseUrl = 'https://uewubyuguyljkwlwwaqf.supabase.co';
+        const supabaseAnonKey = 'sb_publishable_zkM7vzXzd3mR0RmeQ9IvCQ_bMfgBikf';
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+        const params = new URLSearchParams(window.location.search);
+        const recipeId = params.get("id");
+
+        const recipeDiv = document.getElementById("recipe-content");
+        const macrosDiv = document.getElementById("macros-content");
+        const allergensDiv = document.getElementById("allergens-content");
+
+        if (!recipeId) {
+            recipeDiv.innerHTML = "<p>Error: No recipe ID provided.</p>";
+            macrosDiv.innerHTML = "";
+            allergensDiv.innerHTML = "";
+        } else {
+            const fetchRecipe = async () => {
+                // Fetch recipe info
+                const { data: recipe, error: recipeError } = await supabase
+                    .from("Recepies")
+                    .select("*")
+                    .eq("RecepieID", parseInt(recipeId))
+                    .single();
+
+                if (recipeError || !recipe) {
+                    recipeDiv.innerHTML = "<p>Error: Could not fetch recipe.</p>";
+                    macrosDiv.innerHTML = "";
+                    allergensDiv.innerHTML = "";
+                    console.error("Supabase recipe fetch error:", recipeError);
+                    return;
+                }
+
+                recipeDiv.innerHTML = `
+                    <p><strong>Recipe ID:</strong> ${recipe.RecepieID}</p>
+                    <p><strong>Recipe Name:</strong> ${recipe.Recipe}</p>
+                    <p><strong>Calories:</strong> ${recipe.Calories}</p>
+                `;
+
+                // Fetch Macros
+                const { data: macros, error: macrosError } = await supabase
+                    .from("Macros")
+                    .select("*")
+                    .eq("RecepieID", parseInt(recipeId))
+                    .single();
+
+                if (macrosError || !macros) {
+                    macrosDiv.innerHTML = "<p>No macros available for this recipe.</p>";
+                    console.error("Supabase macros fetch error:", macrosError);
+                } else {
+                    macrosDiv.innerHTML = `
+                        <table class="macros-table">
+                            <tr><td>${macros.Fat}</td></tr>
+                            <tr><td>${macros.SaturatedFat}</td></tr>
+                            <tr><td>${macros.Carbs}</td></tr>
+                            <tr><td>${macros.Sugar}</td></tr>
+                            <tr><td>${macros.DietaryFiber}</td></tr>
+                            <tr><td>${macros.Protein}</td></tr>
+                            <tr><td>${macros.Cholesterol}</td></tr>
+                            <tr><td>${macros.Sodium}</td></tr>
+                        </table>
+                    `;
+                }
+
+                // Fetch Allergens
+                const { data: allergens, error: allergensError } = await supabase
+                    .from("Allergens")
+                    .select("*")
+                    .eq("RecepieID", parseInt(recipeId));
+
+                if (allergensError || !allergens || allergens.length === 0) {
+                    allergensDiv.innerHTML = "<p>No allergens listed for this recipe.</p>";
+                    console.error("Supabase allergens fetch error:", allergensError);
+                } else {
+                    const allergenList = allergens.map(a => `<li>${a.Allergen}</li>`).join("");
+                    allergensDiv.innerHTML = `<ul>${allergenList}</ul>`;
+                }
+            };
+
+            fetchRecipe();
+        }
+    </script>
+</body>
+</html>

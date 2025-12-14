@@ -1,0 +1,171 @@
+body {
+    background-color: rgb(230, 230, 228);
+    font-family: sans-serif;
+}
+
+
+
+.planner-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 100px, 1fr, 1fr, 1fr, 1fr;
+    grid-gap: 10px;
+    margin: 10px;
+
+}
+
+.recipe-card {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.planner-items {
+    padding: 2em;
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1.5rem;
+} 
+
+#header-grid {
+    position: relative;
+    grid-column: 1 / 5;
+    grid-row: 1 / 2;
+    text-align: left;
+    padding: 0;
+    overflow: hidden;
+}
+
+#header-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.7),
+            rgba(0, 0, 0, 0.7)
+        ),
+        url("../img/foodbanner3.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+    z-index: 0;
+}
+
+
+#header-grid h1 {
+    color: white;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 2rem;
+    
+}
+
+
+
+#weekly-meals {
+    grid-column: 2 / 5;
+    grid-row: 2 / 5;
+    text-align: left;
+    padding-top: 5px;
+    /* max-width: ; */
+    /* background: linear-gradient(to bottom, #A9C3A0 15%, white 15%); */
+}
+
+.date-wrapper {
+    margin-bottom: 40px;
+    /* background: pink; */
+}
+
+#weekly-meals-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.day-card {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    border-radius: 5px;
+    outline: 2px solid black;
+    padding: 0px;
+    font-size: 1rem;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    height: 3rem;
+    background-color: rgb(165, 179, 154);
+    padding: 10px;
+}
+
+.scroll-box {
+    height: 20rem; 
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.recipe-list {
+    margin-top: 3px;
+}
+
+
+
+
+.recipe-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 15rem;
+    max-height: 20rem;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+#current-date  {
+    font-size: 3rem;
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+#current-week {
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+
+#popular-meals {
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+
+    max-width: 25rem;
+}
+
+
+.add-button {
+    display: inline-block;
+    background-color: #D3A57A;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.add-button:hover {
+    background-color: #8C6548;
+}

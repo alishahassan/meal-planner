@@ -5,107 +5,153 @@ const supabaseUrl = 'https://uewubyuguyljkwlwwaqf.supabase.co';
 const supabaseAnonKey = 'sb_publishable_zkM7vzXzd3mR0RmeQ9IvCQ_bMfgBikf';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Add ingredient to Pantry list
-document.getElementById('add-item-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+let currentUser = null;
 
-    const nameInput = document.getElementById('ingredient-name');
-    const list = document.getElementById('ingredient-list');
-    const name = nameInput.value.trim();
+// Auth + initial load
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data: { user } } = await supabase.auth.getUser();
 
-    if (name === "") {
-        alert("Please enter an ingredient.");
-        return;
-    }
+  if (!user) {
+    window.location.href = "../login.html";
+    return;
+  }
 
-    const newItem = document.createElement('li');
-    newItem.className = 'pantry-item';
-    
-    newItem.innerHTML = `
-        <label>
-            <input type="checkbox" class="ingredient-checkbox" data-ingredient="${name}">
-            <span>${name}</span>
-        </label>
-        <button class="btn-small delete-item">🗑️</button>
-    `;
-    
-    list.appendChild(newItem);
-    nameInput.value = '';
+  currentUser = user;
+  await loadUserPantry();
 });
 
-// RPC Search
-async function searchRecipes(ingredients) {
-    const messageElement = document.getElementById('search-message');
-    const inputSearch = ingredients.join(' | '); 
-    const calLimit = 4000;
+// Load user pantry
+async function loadUserPantry() {
+  const list = document.getElementById("ingredient-list");
+  list.innerHTML = "";
 
-    messageElement.textContent = "Searching...";
-    messageElement.style.display = 'block';
-    
-    try {
-        const { data, error } = await supabase.rpc(
-            'get_recipes_under_calories',
-            {
-                search: '%' + inputSearch + '%',
-                cal_limit: calLimit
-            }
-        );
+  const { data, error } = await supabase
+    .from("OwndedIngridrients")
+    .select(`
+      OwnedID,
+      Ingridients (
+        Ingredient
+      )
+    `)
+    .eq("UserID", currentUser.id);
 
-        if (error) throw error;
+  if (error) {
+    console.error("Load pantry error:", error);
+    return;
+  }
 
-        if (data.length > 0) {
-            messageElement.style.color = 'green';
-            messageElement.textContent = `Found ${data.length} recipes matching your pantry items!`;
-
-            console.log("RPC Search Results:", data);
-
-            // Store results for index.html rendering
-            localStorage.setItem("recipeResults", JSON.stringify(data));
-
-            // Redirect without ingredients (RPC results come via localStorage)
-            window.location.href = "../index.html";
-        } else {
-            messageElement.textContent = "No recipes found matching your selection.";
-        }
-
-    } catch (error) {
-        console.error('Supabase Search Error:', error);
-        messageElement.style.color = 'red';
-        messageElement.textContent = 'Error during search. Check console.';
-    } finally {
-        setTimeout(() => { messageElement.style.display = 'none'; }, 5000);
-    }
+  data.forEach(row => {
+    renderIngredient(row.OwnedID, row.Ingridients.Ingredient);
+  });
 }
 
-// Existing button for RPC
-document.getElementById("search-by-pantry-btn").addEventListener("click", () => {
-    const checkboxes = document.querySelectorAll("#ingredient-list input[type='checkbox']:checked");
-
-    const selected = Array.from(checkboxes).map(cb => cb.dataset.ingredient);
-
-    if (selected.length === 0) {
-        const msg = document.getElementById("search-message");
-        msg.textContent = "Please select at least one ingredient.";
-        msg.style.display = "block";
-        return;
+// Add ingredient
+document.getElementById("add-item-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+  
+    const input = document.getElementById("ingredient-name");
+    const value = input.value.trim();
+    if (!value) return;
+  
+    // Find closest ingredient
+    const { data: match, error: matchError } = await supabase
+      .from("Ingridients")
+      .select("IngridientID, Ingredient")
+      .ilike("Ingredient", `%${value}%`)
+      .limit(1)
+      .single();
+  
+    if (matchError || !match) {
+      alert("Ingredient not found");
+      return;
     }
+  
+    // Check if ingredient is already in user's pantry
+    const { data: existing, error: existingError } = await supabase
+      .from("OwndedIngridrients")
+      .select("*")
+      .eq("UserID", currentUser.id)
+      .eq("IngridientID", match.IngridientID)
+      .single();
+  
+    if (existing) {
+      alert("Ingredient already in your pantry!");
+      input.value = "";
+      return;
+    }
+  
+    // Insert into OwndedIngridrients
+    const { error: insertError } = await supabase
+      .from("OwndedIngridrients")
+      .insert({
+        UserID: currentUser.id,
+        IngridientID: match.IngridientID
+      });
+  
+    if (insertError) {
+      console.error("Insert error:", insertError);
+      alert("Could not add ingredient. Make sure your account exists in Users table.");
+      return;
+    }
+  
+    input.value = "";
+    await loadUserPantry();
+  });
+  
 
-    // Build the query string
-    const query = encodeURIComponent(selected.join(","));
+// Delete Ingredient
+document.getElementById("ingredient-list").addEventListener("click", async (e) => {
+  if (!e.target.classList.contains("delete-item")) return;
 
-    console.log("Redirecting to:", `/index.html?ingredients=${query}`);
+  const li = e.target.closest(".pantry-item");
+  const ownedID = li.dataset.ownedid;
 
-    // Updates browser URL
-    window.location.href = `../index.html?ingredients=${query}`;
+  const { error } = await supabase
+    .from("OwndedIngridrients")
+    .delete()
+    .eq("OwnedID", ownedID);
+
+  if (error) {
+    console.error("Delete error:", error);
+    return;
+  }
+
+  li.remove();
 });
 
+// Render helper function
+function renderIngredient(ownedID, name) {
+  const list = document.getElementById("ingredient-list");
 
-// Delete item from Pantry list
-document.getElementById('ingredient-list').addEventListener('click', function(e) {
-    if (e.target.classList.contains('delete-item')) {
-        const listItem = e.target.closest('.pantry-item');
-        if (listItem) {
-            listItem.remove();
-        }
+  const li = document.createElement("li");
+  li.className = "pantry-item";
+  li.dataset.ownedid = ownedID;
+
+  li.innerHTML = `
+    <label>
+      <input type="checkbox" class="ingredient-checkbox" value="${name}">
+      <span>${name}</span>
+    </label>
+    <button class="btn-small delete-item">🗑️</button>
+  `;
+
+  list.appendChild(li);
+}
+
+document.getElementById("search-by-pantry-btn").addEventListener("click", () => {
+    const checkedBoxes = Array.from(document.querySelectorAll(".ingredient-checkbox:checked"));
+    const selectedIngredients = checkedBoxes.map(cb => cb.value);
+
+    const searchMessage = document.getElementById("search-message");
+    if (selectedIngredients.length === 0) {
+        searchMessage.style.display = "block";
+        searchMessage.textContent = "Please select at least one ingredient to search.";
+        return;
+    } else {
+        searchMessage.style.display = "none";
     }
+
+    // Build URL for index.html
+    const url = `../index.html?ingredients=${encodeURIComponent(selectedIngredients.join(','))}`;
+    window.location.href = url;
 });

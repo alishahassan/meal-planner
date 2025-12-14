@@ -1,0 +1,185 @@
+body {
+    background-color: rgb(230, 230, 228);
+    font-family: sans-serif;
+}
+
+#container-container {
+    justify-content: space-between;
+}
+
+#saved-meals{
+    max-width: 1200px;
+    margin: 40px auto; 
+    padding: 0 20px;
+}
+
+#saved-meals{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#saved-meals{
+    display: grid;
+    grid-template-columns: repeat(3, 1.5fr);
+    gap: 30px;
+}
+
+
+.container-test {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 100px, 1fr, 1fr, 1fr, 1fr;
+    grid-gap: 10px;
+
+}
+
+#meals-made {
+    /* justify-content: left; */
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 4;
+    grid-row: 2/ 3;
+    background-color: rgb(255, 255, 255);
+}
+
+#todays-stats {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    gap: 1rem;
+}
+
+#todays-stats h2{
+margin-top: 0;
+margin-bottom: 2rem;
+
+
+}
+
+
+#stats-header {
+    grid-column: 1 / 5;
+    grid-row: 1 / 2;
+    color: black;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #A9C3A0;
+    /* background-image: url("../img/foodbanner\ copy.png");
+    background-repeat: no-repeat;
+    background-size: 100%; */
+    /* gap: 20px; */
+    
+}
+
+
+#stats-wrapper { 
+    display: flex;
+    flex-direction: row; 
+    align-items: center;              
+    justify-content: center;
+    /* width: 100%;
+    height: 100%; */
+    gap: 5rem;
+}
+
+#caloriesleft-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 12rem;
+    height: 12rem;
+    vertical-align: middle;
+    margin-left: 1rem; 
+}
+
+
+#caloriesleft-container img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;    
+}
+
+#calorie-count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.2rem;   
+    /* font-weight: 700; */
+    color: rgb(32, 32, 32);
+    pointer-events: none;
+    text-align: center;
+    line-height: 1;
+    /* font-family: sans-serif; */
+}
+
+.stats-text-icon {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.stats-text-icon-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.stats-text-icon-text h3,
+.stats-text-icon-text p {
+    margin: 0;
+    line-height: 1.1; 
+    color: rgb(0, 0, 0);
+}
+
+
+#nutrition-icons img {
+    background-color: rgb(255, 255, 238);
+    width: 10%;
+    height: 10%;
+}
+
+
+
+#weekly-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    grid-column: 1 / 4;
+    grid-row: 3 / 4;
+    background-color: rgb(255, 255, 255);
+}
+
+.container-test .grid {
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#weekly-stats #barchart {
+    /* border: 10px solid rgb(213, 161, 117); */
+    /* border-radius: 12px;  */
+    /* background-color: rgb(213, 161, 117); */
+    width: 90%;
+    margin: 0 auto;
+}
+
+img {
+    max-width: 500px;
+    max-height: 500px;
+}
