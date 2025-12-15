@@ -21,6 +21,12 @@ How to install and run the website.
 8. Now, you are free to add ingredients to your Pantry, and add meals to your Meal Tracker. The Meal Planning tab will also start to recommend you meals throughout the week based on what you have in your Pantry and dieting goals (e.g. daily caloric intake)
 9. Enjoy the website!
 
+Running alternatively using XAMPP
+1. Navigate to /home/applications/XAMPP (or wherever XAMPP is located)
+2. Within XAMPP/htdocs paste contents of the project folder
+3. Start the Apache Web Server using manager-osx
+4. Visit localhost on web browser
+
 If you do not want to sign up, you make use a pre-existing log in credential and log in using this email and password:
 Email: velatt@syr.edu
 Password: 123456789
